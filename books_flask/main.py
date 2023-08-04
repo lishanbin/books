@@ -1,5 +1,6 @@
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request,json
 from books import Book
+from settings import BOOK_LIST
 
 """
 接口说明：
@@ -41,6 +42,55 @@ def get_books_cates():
         'message':'请求成功'
     }
     return jsonify(resData)
+
+
+@app.route('/<string:book_cate>',methods=['POST'])
+def get_cates_infos(book_cate):    
+    if request.method == 'POST':
+        print("捕获到了post请求 book_cate:",book_cate)
+        get_data = json.loads(request.get_data(as_text=True))
+        key = get_data['key']
+        secretKey = get_data['secretKey']
+        print(key,secretKey)
+
+        if book_cate not in BOOK_LIST:
+            resData = {
+            'resCode':404,
+            'data':[],
+            'message':'图书类别有误！'
+            }
+            return jsonify(resData) 
+
+        if key == 'newest':
+            # select * from book_infos where book_cate='xiuzhen' order by book_last_update_time desc limit 10
+            book = Book()
+            sql_data = book.get_cates_newest_books_30(book_cate)
+            resData = {
+            'resCode':0,
+            'data':sql_data,
+            'message':'最新的30本图书！'
+            }
+            return jsonify(resData)
+        elif key == 'most':
+            pass
+        else:
+            resData = {
+            'resCode':2,
+            'data':[],
+            'message':'参数有误！'
+            }
+            return jsonify(resData)
+
+
+        return
+    else:
+        resData = {
+        'resCode':1,
+        'data':[],
+        'message':'请求方法错误！'
+        }
+        return jsonify(resData)
+
 
 
 if __name__ == '__main__':
