@@ -9,7 +9,7 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
 
-                    <b-nav-item v-for="item in headData.headers" :key="item.id" :href="item.url">{{ item.text
+                    <b-nav-item  v-for="item in headData.headers" :key="item.id" :class="item.url==now_url?'active':''" :href="item.url">{{ item.text
                     }}</b-nav-item>
 
                 </b-navbar-nav>
@@ -35,6 +35,9 @@ import { reactive, ref } from "@vue/composition-api";
 export default {
     name: "Header",
     setup(props, context) {
+
+        const now_url = ref(context.root.$route.path)
+
         const headData = reactive({
             headers: []
         });
@@ -44,7 +47,8 @@ export default {
         });
 
         return {
-            headData
+            headData,
+            now_url
         };
     }
 }

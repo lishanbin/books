@@ -72,7 +72,14 @@ def get_cates_infos(book_cate):
             }
             return jsonify(resData)
         elif key == 'most':
-            pass
+            book = Book()
+            sql_data = book.get_cates_most_books_30(book_cate)
+            resData = {
+            'resCode':0,
+            'data':sql_data,
+            'message':'阅读最多的30本图书！'
+            }
+            return jsonify(resData)
         else:
             resData = {
             'resCode':2,
@@ -91,7 +98,40 @@ def get_cates_infos(book_cate):
         }
         return jsonify(resData)
 
-
+# 图书首页信息
+@app.route('/book/<int:book_id>',methods=['POST'])
+def get_book_infos_by_id(book_id):
+    if request.method == 'POST':
+        get_data = json.loads(request.get_data(as_text=True))
+        key = get_data['key']
+        secretKey = get_data['secretKey']
+        book = Book()
+        if key == 'index':
+            sql_data = book.get_book_infos_by_book_id(book_id)
+            resData = {
+            'resCode':0,
+            'data':sql_data,
+            'message':'图书信息！'
+            }
+            return jsonify(resData)
+        elif key == 'cap20':
+            pass
+        elif key == 'capAll':
+            pass
+        else:
+            resData = {
+            'resCode':1,
+            'data':[],
+            'message':'请求参数错误'
+            }
+            return jsonify(resData) 
+    else:
+        resData = {
+            'resCode':1,
+            'data':[],
+            'message':'请求方法错误'
+            }
+        return jsonify(resData) 
 
 if __name__ == '__main__':
     app.run()

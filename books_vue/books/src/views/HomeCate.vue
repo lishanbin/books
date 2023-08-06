@@ -16,8 +16,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in nItems.newestItems">
-                                <th scope="row">{{ item.id }}</th>
+                            <tr v-for="item,index in nItems.newestItems" :key="item.id">
+                                <th scope="row">{{ index+1 }}</th>
                                 <td><a :href="'/book/'+item.book_id">{{ item.book_name }}</a></td>
                                 <td><a :href="'/book/'+item.book_id+'/'+item.book_newest_url">{{ item.book_newest_name }}</a></td>
                                 <td>{{ dateFormat(item.book_last_update_time) }}</td>
@@ -28,6 +28,22 @@
                 <b-col cols="12" md="1"></b-col>
                 <b-col cols="12" md="4">
                     <h6>最多阅读的小说</h6>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">小说</th>
+                                <th scope="col">作者</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item,index in nItems.mostItems" :key="item.id">
+                                <th scope="row">{{ index+1 }}</th>
+                                <td><a :href="'/book/'+item.book_id">{{ item.book_name }}</a></td>
+                                <td><a :href="'/book/'+item.book_id">{{ item.book_author }}</a></td>
+                            </tr>                            
+                        </tbody>
+                    </table>
                 </b-col>
             </b-row>
         </b-container>
@@ -63,12 +79,18 @@ export default {
         });
 
         const nItems = reactive({
-            newestItems: []
+            newestItems: [],
+            mostItems:[]
         });
 
         GetInfoPost(newsParams).then((resp) => {
             console.log(resp);
             nItems.newestItems = resp.data.data
+        });
+
+        GetInfoPost(mostParams).then((resp) => {
+            console.log(resp);
+            nItems.mostItems = resp.data.data
         });
 
         onMounted(() => {
