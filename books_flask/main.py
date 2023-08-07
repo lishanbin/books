@@ -1,6 +1,7 @@
-from flask import Flask,jsonify,request,json
+from flask import Flask,jsonify,request,json,abort
 from books import Book
 from settings import BOOK_LIST
+import re
 
 """
 接口说明：
@@ -16,6 +17,24 @@ from settings import BOOK_LIST
 app = Flask(__name__)
 
 app.config['JSON_AS_ASCII'] = False
+
+# 检查是否有特殊字符
+def is_string_validate(str):
+    sub_str = re.sub(u"([^\u4E00-\u9FA5\u0030-\u0039\u0041-\u005a\u0061-\u007a])","",str)
+    if len(str) == len(sub_str):
+        return False
+    else:
+        return True
+    
+@app.errorhandler(404)
+def handler_404_error(err):
+    resData = {
+            'resCode':404,
+            'data':[],
+            'message':'404'
+            }
+    return jsonify(resData)
+
 
 @app.route('/')
 def hello_world():
@@ -45,7 +64,17 @@ def get_books_cates():
 
 
 @app.route('/<string:book_cate>',methods=['POST'])
-def get_cates_infos(book_cate):    
+def get_cates_infos(book_cate):
+    if is_string_validate(book_cate):
+        # resData = {
+        #     'resCode':404,
+        #     'data':[],
+        #     'message':'输入数据有误！'
+        #     }
+        # return jsonify(resData)
+        abort(404)
+        
+
     if request.method == 'POST':
         print("捕获到了post请求 book_cate:",book_cate)
         get_data = json.loads(request.get_data(as_text=True))
@@ -106,8 +135,8 @@ def get_book_infos_by_id(book_id):
         key = get_data['key']
         secretKey = get_data['secretKey']
         book = Book()
-        if key == 'index':
-            sql_data = book.get_book_infos_by_book_id(book_id)
+        sql_data = book.get_book_infos_by_book_id(book_id)
+        if key == 'index':            
             resData = {
             'resCode':0,
             'data':sql_data,
@@ -115,9 +144,35 @@ def get_book_infos_by_id(book_id):
             }
             return jsonify(resData)
         elif key == 'cap20':
-            pass
+            if len(sql_data) == 0:
+                resData = {
+                    'resCode':5,
+                    'data':[],
+                    'message':'图书不存在！'
+                    }
+                return jsonify(resData)
+            cap20_data = book.get_book_details_newest_20_by_book_id(book_id)
+            resData = {
+            'resCode':0,
+            'data':cap20_data,
+            'message':'最新20章图书信息！'
+            }
+            return jsonify(resData)
         elif key == 'capAll':
-            pass
+            if len(sql_data) == 0:
+                resData = {
+                    'resCode':5,
+                    'data':[],
+                    'message':'图书不存在！'
+                    }
+                return jsonify(resData)
+            capAll_data = book.get_book_details_by_book_id(book_id)
+            resData = {
+            'resCode':0,
+            'data':capAll_data,
+            'message':'图书所有章节的信息！'
+            }
+            return jsonify(resData)
         else:
             resData = {
             'resCode':1,

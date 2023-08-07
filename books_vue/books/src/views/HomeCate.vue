@@ -1,8 +1,9 @@
 <template>
     <div id="HomeCate">
         <Header />
-        <b-container>
-            <b-row>
+        <b-container>           
+            <div>
+                <b-row>
                 <b-col cols="12" md="7">
                     <h6>最新更新的小说</h6>
                     <!-- <b-table striped hover :items="nItems.newestItems.items" :fields="nItems.newestItems.fields"></b-table> -->
@@ -46,6 +47,7 @@
                     </table>
                 </b-col>
             </b-row>
+            </div>            
         </b-container>
         <Footer />
     </div>
@@ -80,17 +82,22 @@ export default {
 
         const nItems = reactive({
             newestItems: [],
-            mostItems:[]
+            mostItems:[],
+            resCode:0
         });
 
         GetInfoPost(newsParams).then((resp) => {
             console.log(resp);
             nItems.newestItems = resp.data.data
+            nItems.resCode = resp.data.resCode
+        }).catch(err=>{
+           console.log(err)
         });
 
         GetInfoPost(mostParams).then((resp) => {
             console.log(resp);
             nItems.mostItems = resp.data.data
+            nItems.resCode = resp.data.resCode
         });
 
         onMounted(() => {

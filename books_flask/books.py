@@ -55,6 +55,22 @@ class Book(object):
             data.append(temp)
         return data;
 
+    def get_book_details_by_book_id(self,book_id):
+        sql = "select * from book_details where book_id='{}' order by sort_id".format(book_id)
+        self.cursor.execute(sql)
+        data = []
+        for temp in self.cursor.fetchall():
+            data.append(temp)
+        return data;
+
+    def get_book_details_newest_20_by_book_id(self,book_id):
+        sql = "select * from book_details where book_id='{}' order by sort_id desc limit 20".format(book_id)
+        self.cursor.execute(sql)
+        data = []
+        for temp in self.cursor.fetchall():
+            data.append(temp)
+        return data;
+
 
 
 
