@@ -71,6 +71,31 @@ class Book(object):
             data.append(temp)
         return data;
 
+    def get_book_detail_by_book_id_sort_id(self,book_id,sort_id):
+        sql = "select * from book_details where book_id='{}' and sort_id='{}'".format(book_id,sort_id)
+        self.cursor.execute(sql)
+        data = []
+        for temp in self.cursor.fetchall():
+            data.append(temp)
+        return data;
+
+    # 查询上一章的SQL：select * from book_details where book_id=45563 and sort_id<328922 order by sort_id desc limit 1
+    def get_prev_cap_id(self,book_id,sort_id):
+        sql = 'select sort_id from book_details where book_id={} and sort_id<{} order by sort_id desc limit 1'.format(book_id,sort_id)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchone()        
+        return data;
+
+
+
+    # 查询下一章的SQL：select * from book_details where book_id=45563 and sort_id>328922 order by sort_id limit 1
+    def get_next_cap_id(self,book_id,sort_id):
+        sql = 'select sort_id from book_details where book_id={} and sort_id>{} order by sort_id limit 1'.format(book_id,sort_id)
+        self.cursor.execute(sql)
+        data = self.cursor.fetchone()        
+        return data;
+
+
 
 
 

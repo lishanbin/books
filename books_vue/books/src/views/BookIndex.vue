@@ -5,11 +5,11 @@
             <div v-if="items.indexItems.length == 1">
                 <b-row>
                     <b-col md="4">
-                        <b-img thumbnail fluid src="https://picsum.photos/250/250/?image=59" alt="Image 3"></b-img>
+                        <b-img thumbnail fluid class="p-3" style="width: 80%;margin-left: 10%;margin-top: 1rem;" :src="items.indexItems[0].image_urls" alt="Image 3"></b-img>
                     </b-col>
                     <b-col md="8">
                         <div>
-                            <b-jumbotron header-level="4">
+                            <b-jumbotron header-level="4" style="padding:3rem;margin: 1rem;">
                                 <template #header>{{ items.indexItems[0].book_name }}</template>
                                 <div>作者：{{ items.indexItems[0].book_author }}</div>
                                 <div>最新章节：{{ items.indexItems[0].book_newest_name }}</div>
@@ -20,7 +20,7 @@
 
                                 <p v-html="'小说简介：' + items.indexItems[0].book_desc"></p>
 
-                                <b-button pill variant="primary" style="float: right;" href="#">开始阅读</b-button>
+                                <b-button pill variant="primary" style="float: right;" :href="'/book/'+items.indexItems[0].book_id+'/'+items.capAllItems[0].sort_id">开始阅读</b-button>
                                 <b-button pill variant="success" style="float: left;" href="#">加入收藏夹</b-button>
                             </b-jumbotron>
                         </div>

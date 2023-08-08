@@ -188,5 +188,50 @@ def get_book_infos_by_id(book_id):
             }
         return jsonify(resData) 
 
+# 获取图书详情页接口
+@app.route('/book/<int:book_id>/<int:sort_id>',methods=['POST'])
+def get_book_detail_infos(book_id,sort_id):
+    if request.method == 'POST':
+        get_data = json.loads(request.get_data(as_text=True))
+        key = get_data['key']
+        secretKey = get_data['secretKey']
+        book = Book()
+        sql_data = book.get_book_infos_by_book_id(book_id)
+        if len(sql_data) == 0:
+            # 不存在该图书
+            resData = {
+            'resCode':1,
+            'data':[],
+            'message':'不存在该图书信息'
+            }
+            return jsonify(resData) 
+        # 该图书存在        
+        sql_detail_data = book.get_book_detail_by_book_id_sort_id(book_id,sort_id)
+        prev_data = book.get_prev_cap_id(book_id,sort_id)
+        next_data = book.get_next_cap_id(book_id,sort_id)
+
+        sql_detail_data[0]['book_name'] = sql_data[0]['book_name']
+        print('prev_data=====',prev_data)
+        if prev_data != None:
+            sql_detail_data[0]['prev_sort_id'] = prev_data['sort_id']
+        if next_data != None:
+            sql_detail_data[0]['next_sort_id'] = next_data['sort_id']
+
+        resData = {
+            'resCode':0,
+            'data':sql_detail_data,
+            'message':'图书详情信息！'
+            }
+        return jsonify(resData)
+
+    else:
+        resData = {
+            'resCode':1,
+            'data':[],
+            'message':'请求方法错误'
+            }
+        return jsonify(resData) 
+
+
 if __name__ == '__main__':
     app.run()
