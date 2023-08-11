@@ -11,9 +11,9 @@
                         <div>
                             <b-jumbotron header-level="4" style="padding:3rem;margin: 1rem;">
                                 <template #header>{{ items.indexItems[0].book_name }}</template>
-                                <div>作者：{{ items.indexItems[0].book_author }}</div>
-                                <div>最新章节：{{ items.indexItems[0].book_newest_name }}</div>
-                                <div>最新更新时间：{{ dateFormat(items.indexItems[0].book_last_update_time) }}</div>
+                                <div class="mb-3 mt-3">作者：{{ items.indexItems[0].book_author }}</div>
+                                <div class="mb-3">最新章节：{{ items.indexItems[0].book_newest_name }}</div>
+                                <div class="mb-3">最新更新时间：{{ dateFormat(items.indexItems[0].book_last_update_time) }}</div>
                                 <div>本书状态：{{ items.indexItems[0].book_status }}</div>
 
                                 <hr class="my-4">
@@ -27,23 +27,23 @@
 
                     </b-col>
                 </b-row>
-                <b-row>
+                <b-row class="mt-3 mb-3" style="text-align: center;font-weight: bolder;">
                     <b-col>
                         <h5>图书最近更新的20章</h5>
                     </b-col>
                 </b-row>
-                <b-row>
+                <b-row class="mt-3 mb-3">
                     <b-col cols="12" md="4" v-for="item in items.cap20Items" :key="item.id">
                         <a :href="'/book/'+item.book_id+'/'+item.sort_id">{{ item.detail_title }}</a>
                     </b-col>                    
                 </b-row>
 
-                <b-row>
+                <b-row class="mt-3 mb-3" style="text-align: center;font-weight: bolder;">
                     <b-col>
                         <h5>图书所有章节：</h5>
                     </b-col>
                 </b-row>
-                <b-row>
+                <b-row class="mt-3 mb-3">
                     <b-col cols="12" md="4" v-for="item in items.capAllItems" :key="item.id">
                        <a :href="'/book/'+item.book_id+'/'+item.sort_id">{{ item.detail_title }}</a> 
                     </b-col>
@@ -61,7 +61,7 @@
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import { GetInfoPost } from "@/apis/read.js";
-import { reactive, ref } from "@vue/composition-api";
+import { reactive, ref,onMounted } from "@vue/composition-api";
 import dateFormat from "@/utils/date.js"
 
 export default {
@@ -107,6 +107,23 @@ export default {
         GetInfoPost(cap20Params).then((resp) => {
             // console.log(resp);
             items.cap20Items = resp.data.data
+        });
+
+        onMounted(() => {
+            
+            const titleParams = reactive({
+                url:'/title',
+                key:'bookindex'
+                })    
+
+            GetInfoPost(titleParams).then((resp)=>{
+                console.log("In BookIndex title =",resp.data)
+                document.title =items.indexItems[0].book_name + '_' +  resp.data.data[0];
+                document.querySelector('meta[name="keywords"]').setAttribute('content',items.indexItems[0].book_name + '_' +  resp.data.data[1]);
+                document.querySelector('meta[name="description"]').setAttribute('content',items.indexItems[0].book_name + '_' +  resp.data.data[2]);     
+                })
+
+
         });
 
         return {

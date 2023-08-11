@@ -95,6 +95,14 @@ class Book(object):
         data = self.cursor.fetchone()        
         return data;
 
+    # 搜索SQL:select * from book_infos where book_name like '%五%' or book_author like '%人%'
+    def search_infos_by_key(self,key):
+        sql = "select * from book_infos where book_name like '%{}%' or book_author like '%{}%'".format(key,key)
+        self.cursor.execute(sql)
+        data = []
+        for temp in self.cursor.fetchall():
+            data.append(temp)
+        return data;
 
 
 

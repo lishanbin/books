@@ -1,11 +1,12 @@
 <template>
     <div id="HomeCate">
         <Header />
+        <Ads />
         <b-container>           
             <div>
                 <b-row>
                 <b-col cols="12" md="7">
-                    <h6>最新更新的小说</h6>
+                    <h5 class="mt-3 mb-3">最新更新的小说</h5>
                     <!-- <b-table striped hover :items="nItems.newestItems.items" :fields="nItems.newestItems.fields"></b-table> -->
                     <table class="table table-hover">
                         <thead>
@@ -28,7 +29,7 @@
                 </b-col>
                 <b-col cols="12" md="1"></b-col>
                 <b-col cols="12" md="4">
-                    <h6>最多阅读的小说</h6>
+                    <h5  class="mt-3 mb-3">最多阅读的小说</h5>
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -49,6 +50,7 @@
             </b-row>
             </div>            
         </b-container>
+        <AdsFooter />
         <Footer />
     </div>
 </template>
@@ -59,13 +61,17 @@ import Footer from '@/components/Footer.vue';
 import { ref, reactive, onMounted } from '@vue/composition-api';
 import { GetInfoPost } from "@/apis/read.js";
 import dateFormat from "@/utils/date.js";
+import Ads from "@/components/Ads.vue"
+import AdsFooter from "@/components/AdsFooter.vue"
 
 export default {
     name: "HomeCate",
     props: {},
     components: {
         Header,
-        Footer
+        Footer,
+        Ads,
+        AdsFooter
     },
     setup(props, context) {
         const now_url = ref(context.root.$route.path);
@@ -102,6 +108,19 @@ export default {
 
         onMounted(() => {
             console.log("In HomeCate context = ", now_url.value)
+            const titleParams = reactive({
+                url:'/title',
+                key:context.root.$route.path.replace(/\//g,'')
+                })    
+
+            GetInfoPost(titleParams).then((resp)=>{
+                console.log("In Home title =",resp.data)
+                document.title = resp.data.data[0];
+                document.querySelector('meta[name="keywords"]').setAttribute('content',resp.data.data[1]);
+                document.querySelector('meta[name="description"]').setAttribute('content',resp.data.data[2]);     
+                })
+
+
         });
 
         return {

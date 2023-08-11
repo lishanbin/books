@@ -76,7 +76,7 @@ module.exports = defineConfig({
         // 我们去创建它
       },
       scss: {
-        prependData: '@import "./src/styles/main.scss";' 
+        // prependData: '@import "./src/styles/main.scss";' 
       }
     }
   },
@@ -87,6 +87,9 @@ module.exports = defineConfig({
 
   lintOnSave:false,
   devServer: {
+    client:{
+      overlay:false
+    },
     open: process.platform === "darwin",
     host: 'localhost',
     port: '8080',    

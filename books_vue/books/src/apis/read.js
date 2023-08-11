@@ -1,4 +1,5 @@
 import service from "@/utils/request.js";
+import { rsaEncrypt } from "@/utils/rsa.js";
 
 export function GetCates() {
     return service({
@@ -13,7 +14,7 @@ export function GetInfoPost(postParams){
         url:postParams.url,
         data:{
             key:postParams.key,
-            secretKey:'大家好，我是secretKey'  //预留字段给加密用
+            secretKey:rsaEncrypt(new Date().getTime()+':'+'www.weqan.com'+':'+'otherinfos')  //预留字段给加密用
         }
     });
 }

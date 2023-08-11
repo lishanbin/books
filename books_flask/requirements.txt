@@ -7,7 +7,9 @@ importlib-metadata @ file:///C:/b/abs_20ndzb2j6v/croot/importlib-metadata_167899
 itsdangerous @ file:///tmp/build/80754af9/itsdangerous_1621432558163/work
 Jinja2 @ file:///C:/b/abs_7cdis66kl9/croot/jinja2_1666908141852/work
 MarkupSafe @ file:///C:/ci/markupsafe_1654489871526/work
+pyasn1==0.5.0
 pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
 PyMySQL @ file:///C:/ci/pymysql_1610482945113/work
+rsa==4.9
 Werkzeug @ file:///C:/b/abs_8578rs2ra_/croot/werkzeug_1679489759009/work
 zipp @ file:///C:/b/abs_b9jfdr908q/croot/zipp_1672387552360/work
