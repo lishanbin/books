@@ -1,6 +1,7 @@
 <template>
     <div id="BookIndex">
         <Header />
+        <Ads />
         <b-container style="margin-top: 2rem;">
             <div v-if="items.indexItems.length == 1">
                 <b-row>
@@ -53,6 +54,7 @@
                 哦哦，您要查看的图书不存在
             </div>
         </b-container>
+        <AdsFooter />
         <Footer />
     </div>
 </template>
@@ -63,12 +65,16 @@ import Footer from '@/components/Footer.vue';
 import { GetInfoPost } from "@/apis/read.js";
 import { reactive, ref,onMounted } from "@vue/composition-api";
 import dateFormat from "@/utils/date.js"
+import Ads from "@/components/Ads.vue"
+import AdsFooter from "@/components/AdsFooter.vue"
 
 export default {
     name: "BookIndex",
     components: {
         Header,
-        Footer
+        Footer,
+        Ads,
+        AdsFooter
     },
     setup(props, context) {
         // const now_url = ref(context.root.$route.path)

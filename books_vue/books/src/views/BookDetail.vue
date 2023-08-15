@@ -1,6 +1,7 @@
 <template>
 <div id="BookDetail">
     <Header />
+    <Ads />
     <b-container v-if="items.detailsItems.length == 1">
         <b-row class="mt-3"><b-col>
             当前路径：<a href="/">首页</a>--<a :href="'/book/'+items.detailsItems[0].book_id">{{ items.detailsItems[0].book_name }}</a>--{{ items.detailsItems[0].detail_title }}
@@ -35,6 +36,7 @@
     <b-container v-else>
         您要查询的章节不存在哦！
     </b-container>
+    <AdsFooter />
     <Footer />
 </div>
 </template>
@@ -45,11 +47,17 @@ import Footer from "@/components/Footer.vue";
 import { reactive,ref,onMounted } from "@vue/composition-api";
 import { GetInfoPost } from "@/apis/read.js";
 import { replaceBr } from "@/utils/replaceBr.js";
+import Ads from "@/components/Ads.vue"
+import AdsFooter from "@/components/AdsFooter.vue"
+
+
 export default{
     name:"BookDetail",
     components:{
         Header,
-        Footer
+        Footer,
+        Ads,
+        AdsFooter
     },
     setup(props,context){
         const detailParams = reactive({

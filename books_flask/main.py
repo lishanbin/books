@@ -1,10 +1,11 @@
 from flask import Flask,jsonify,request,json,abort
 from books import Book
-from settings import BOOK_LIST,RSA_1024_PRIV_KEY,REQUEST_LISTS,TITLES
+from settings import BOOK_LIST,RSA_1024_PRIV_KEY,REQUEST_LISTS,TITLES,PHONE_ADS,PC_ADS,COL_ADS
 import re
 import rsa
 import base64
 import time
+import random
 
 """
 接口说明：
@@ -447,6 +448,108 @@ def get_titles_infos():
             }
         return jsonify(resData)  
 
+# 获取广告链接的API(横向)
+@app.route('/ads',methods=['POST'])
+def get_row_ads_by_key():
+    if request.method == 'POST':
+        get_data = json.loads(request.get_data(as_text=True))
+        key = get_data['key']
+        secretKey =get_data['secretKey']
+        secret_result = get_secret_key(secretKey)
+
+
+        if secret_result['timespan'] == '':
+            resData = {
+                'resCode':1,
+                'data':[],
+                'message':'你猜，你使劲猜'
+                }
+            return jsonify(resData)
+
+        if is_allow_domain_time(secret_result['timespan'],secret_result['url']):
+            resData = {
+                'resCode':1,
+                'data':[],
+                'message':'你猜，你使劲猜'
+                }
+            return jsonify(resData)
+        
+        if key == 'pc':
+            data = PC_ADS[random.randint(0,len(PC_ADS)-1)]
+            resData = {
+                'resCode':0,
+                'data':data,
+                'message':'该请求返回的直接是一个json数据，不是数组'
+                }
+            return jsonify(resData)
+
+        elif key == 'phone':
+            data = PHONE_ADS[random.randint(0,len(PHONE_ADS)-1)]
+            resData = {
+                'resCode':0,
+                'data':data,
+                'message':'该请求返回的直接是一个json数据，不是数组'
+                }
+            return jsonify(resData)
+        else:
+            resData = {
+            'resCode':1,
+            'data':[],
+            'message':'请求参数错误'
+            }
+            return jsonify(resData)          
+        
+    else:
+        resData = {
+            'resCode':1,
+            'data':[],
+            'message':'请求方法错误'
+            }
+        return jsonify(resData)  
+    
+
+# 获取广告链接的API(纵向)
+@app.route('/colads',methods=['POST'])
+def get_col_ads_by_key():
+    if request.method == 'POST':
+        get_data = json.loads(request.get_data(as_text=True))
+        key = get_data['key']
+        secretKey =get_data['secretKey']
+        secret_result = get_secret_key(secretKey)
+
+
+        if secret_result['timespan'] == '':
+            resData = {
+                'resCode':1,
+                'data':[],
+                'message':'你猜，你使劲猜'
+                }
+            return jsonify(resData)
+
+        if is_allow_domain_time(secret_result['timespan'],secret_result['url']):
+            resData = {
+                'resCode':1,
+                'data':[],
+                'message':'你猜，你使劲猜'
+                }
+            return jsonify(resData)
+        
+        data1 = COL_ADS[random.randint(0,len(COL_ADS)-1)]
+        data2 = COL_ADS[random.randint(0,len(COL_ADS)-1)]
+        resData = {
+            'resCode':0,
+            'data':[data1,data2],
+            'message':'该请求返回的是数组'
+            }
+        return jsonify(resData)        
+        
+    else:
+        resData = {
+            'resCode':1,
+            'data':[],
+            'message':'请求方法错误'
+            }
+        return jsonify(resData)  
 
 
 if __name__ == '__main__':

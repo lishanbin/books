@@ -1,30 +1,70 @@
 <template>
     <b-container>
         <div id="main-top-ad">
-            <a href="#" target="_blank">
-                <img id="top-img" src="https://i.loli.net/2020/06/11/MLPaI12eFsyRXck.jpg" alt="对于该图片的描述" />
+            <a :href="rowAdsData.data.url" target="_blank">
+                <img id="top-img" :src="rowAdsData.data.img_path" :alt="rowAdsData.data.alt" />
             </a>
         </div>
         <div id="main-left-ad">
-            <a href="#" target="_blank">
-                <img id="left-img" src="https://i.loli.net/2020/06/11/sDlvEWaeSxzpYgb.jpg" alt="对于该图片的描述" />
+            <a :href="colAdsData.data[0].url" target="_blank">
+                <img id="left-img" :src="colAdsData.data[0].img_path" :alt="colAdsData.data[0].alt" />
             </a>
         </div>
         <div id="main-right-ad">
-            <a href="#" target="_blank">
-                <img id="right-img" src="https://i.loli.net/2020/06/11/sDlvEWaeSxzpYgb.jpg" alt="对于该图片的描述" />
+            <a :href="colAdsData.data[1].url" target="_blank">
+                <img id="left-img" :src="colAdsData.data[1].img_path" :alt="colAdsData.data[1].alt" />
             </a>
         </div>
     </b-container>
 </template>
 
 <script>
+import { GetInfoPost } from "@/apis/read.js";
+import { reactive } from "@vue/composition-api";
 export default{
     name:"Ads",
     setup(props,context){
 
-        return{
+        const is_PC = ()=>{
+            if (document.body.clientWidth<400) {
+                return 'phone'
+            }else{
+                return 'pc'
+            }
+        }
 
+        const adsParams = reactive({
+            url:'/ads',
+            key:is_PC()
+        });
+
+        const rowAdsData = reactive({
+            data:{}
+        })
+
+        GetInfoPost(adsParams).then((resp)=>{
+            console.log("AAAAAAAAAA resp.data=",resp.data);
+            rowAdsData.data = resp.data.data;
+
+        });
+
+        const colParams = reactive({
+            url:'/colads',
+            key:''
+        });
+
+        const colAdsData = reactive({
+            data:{}
+        })
+
+        GetInfoPost(colParams).then((resp)=>{
+            console.log("BBBBBBBBBBB resp.data=",resp.data);
+            colAdsData.data = resp.data.data;
+        });
+
+        return{
+            rowAdsData,
+            colAdsData
         }
     }
 }

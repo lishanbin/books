@@ -56,3 +56,53 @@ TITLES = {
         "bookdetail":['小说详情页标题','小说详情页关键词','小说详情页描述'],
     }
 }
+
+PHONE_ADS = [
+    {
+        "url":"http://jidcy.com/",
+        "img_path":"https://i.loli.net/2020/06/11/MLPaI12eFsyRXck.jpg",
+        "alt":"phone ads"
+    },
+    {
+        "url":"http://www.baidu.com/",
+        "img_path":"https://i.loli.net/2020/06/11/MLPaI12eFsyRXck.jpg",
+        "alt":"百度"
+    }
+]
+
+PC_ADS = [
+    {
+        "url":"http://jidcy.com/",
+        "img_path":"https://i.loli.net/2020/07/01/LYOu8yNXT93E4H1.jpg",
+        "alt":"phone ads"
+    },
+    {
+        "url":"http://www.baidu.com/",
+        "img_path":"https://i.loli.net/2020/07/01/LYOu8yNXT93E4H1.jpg",
+        "alt":"百度"
+    }
+]
+
+
+COL_ADS = [
+    {
+        "url":"http://jidcy.com/",
+        "img_path":"https://i.loli.net/2020/06/11/sDlvEWaeSxzpYgb.jpg",
+        "alt":"phone ads"
+    },
+    {
+        "url":"http://www.baidu.com/",
+        "img_path":"https://i.loli.net/2020/06/11/sDlvEWaeSxzpYgb.jpg",
+        "alt":"百度"
+    },
+    {
+        "url":"http://www.jd.com/",
+        "img_path":"https://i.loli.net/2020/06/11/sDlvEWaeSxzpYgb.jpg",
+        "alt":"京东"
+    },
+    {
+        "url":"http://www.163.com/",
+        "img_path":"https://i.loli.net/2020/06/11/sDlvEWaeSxzpYgb.jpg",
+        "alt":"网易"
+    }
+]
